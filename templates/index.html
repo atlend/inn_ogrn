@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+<script>
+function myFunction(){
+    var x = document.getElementById("input");
+    var s = document.getElementById("submit");
+    if (x.value.length == 10){
+        s.disabled = false;
+        s.value = "ИНН";
+    } else if (x.value.length == 13){
+        s.disabled = false;
+        s.value = "ОГРН";
+    } else {
+        s.disabled = true;
+        s.value = "не ИНН и не ОГРН";
+    }
+    }
+</script>
+{% if not status %}
+<h1>{{title}}</h1>
+    {% if request.method == 'POST' %}
+    <form action="/" method="post">
+        <input id="input" onchange="myFunction()" name="a" type="number">
+        <input id="submit" type="submit" disabled>
+    </form>
+    {% endif %}
+{% endif %}
+
+{% if status %}
+<p>{{title}}:</p>
+<h1>{{status}}</h1>
+{% endif %}
+
+{% if results %}
+<table>
+    {% for i in results %}
+    <tr>
+        <td>{{i['type']}}</td>
+        <td>{{i['number']}}</td>
+        <td>{{i['status']}}</td>
+        <td>{{i['time_stamp']}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+</body>
+</html>
